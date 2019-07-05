@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ошибка</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Разлогиниться"/>
+</form>
+<h1>Упс ошибка</h1>
+<h2><a href="/">Главная страница</a></h2>

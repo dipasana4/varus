@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Вход</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div th:if="${param.error}">
+    Неправльный логин и пароль
+</div>
+<div th:if="${param.logout}">
+    Ты разлогинился
+</div>
+
+<form th:action="@{/login}" method="post">
+    <table>
+        <tr>
+            <td>Логин</td>
+            <td><input type="text" name="username"/></td>
+        </tr>
+        <tr>
+            <td>Пароль</td>
+            <td><input type="password" name="password"/></td>
+        </tr>
+    </table>
+    <div><input type="submit" value="Войти"/></div>
+    <p>admin - admin</p>
+    <p>user - user</p>
+</form>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Админ страница</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="css/index.css" rel="stylesheet">
+</head>
+
+<body>
+
+<h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Разлогиниться"/>
+</form>
+
+<div id="tabs">
+    <div class="tab whiteborder">Шаблоны</div>
+    <div class="tab">Документы</div>
+
+    <div class="tabContent" th:switch="${templates}">
+        <h2 th:case="null">Нет доступных шаблонов!</h2>
+        <div th:case="*">
+            <h2>Шаблоны</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Дата</th>
+                    <th>Создать по шаблону документ</th>
+                    <th>Удалить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="template : ${templates}">
+                    <td><a th:text="${template.name}" th:href="@{/template/{id}(id=${template.id})}">Edit</a></td>
+                    <td th:text="${template.author}"></td>
+                    <td th:text="${template.date}"></td>
+                    <td><a th:href="@{/document/create/{id}(id=${template.id})}">Создать документ</a></td>
+                    <td>
+                        <form method="POST" th:action="@{/template/delete(templateId=${template.id})}">
+                            <button type="submit" name="submit" value="value">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p><a href="/template/create">Создать новый шаблон</a></p>
+    </div>
+
+    <div class="tabContent" th:switch="${documents}">
+        <h2 th:case="null">Нет доступных документов!</h2>
+        <div th:case="*">
+            <h2>Документы</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Тип</th>
+                    <th>Дата</th>
+                    <th>Удалить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="doc : ${documents}">
+                    <td><a th:text="${doc.name}" th:href="@{/document/{id}(id=${doc.id})}">Edit</a></td>
+                    <td th:text="${doc.type}"></td>
+                    <td th:text="${doc.date}"></td>
+                    <td>
+                        <form method="POST" th:action="@{/document/delete(documentId=${doc.id})}">
+                            <button type="submit" name="submit" value="value">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="js/tab.js"></script>
+</body>
+</html>

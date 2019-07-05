@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Создать документ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Разлогиниться"/>
+</form>
+
+<h2><a href="/">Главная страница</a></h2>
+<h2>Создать документ</h2>
+
+<form action="#" th:action="@{/document/create}" th:object="${document}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>
+                <input hidden type="text" th:field="*{id}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Название документа</td>
+            <td>
+                <input type="text" th:field="*{name}" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>Тип</td>
+            <td>
+                <input type="text" th:field="*{type}" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>Дата создания</td>
+            <td>
+                <input type="date" th:field="*{date}" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание</td>
+            <td>
+                <input type="text" th:field="*{description}"/>
+            </td>
+        </tr>
+        <tr th:if="${file}">
+            <td>Загрузить файл</td>
+            <td><input type="file" name="docFile"/></td>
+        </tr>
+        <tr th:if="${term}">
+            <td>Срок</td>
+            <td>
+                <input type="number" th:field="*{termYear}"/>
+            </td>
+        </tr>
+        <tr th:if="${url}">
+            <td>URL</td>
+            <td>
+                <input type="url" th:field="*{url}"/>
+            </td>
+        </tr>
+        <tr th:each="pr, stat: *{fieldAndValue}">
+            <td th:text="${pr.key}">1</td>
+            <!--                <td><input type="text" name="value" th:value="${pr.key}" readonly="true"/></td>-->
+            <td><input type="text" name="value" th:field="*{fieldAndValue[__${pr.key}__]}"/></td>
+        </tr>
+    </table>
+
+    <div class="submit">
+        <button type="submit" name="save">Сохранить</button>
+    </div>
+
+</form>
+
+</body>
+</html>

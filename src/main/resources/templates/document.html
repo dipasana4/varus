@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Документ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Разлогиниться"/>
+</form>
+
+<h2><a href="/">Главная страница</a></h2>
+
+<table>
+    <tr>
+        <td>Название</td>
+        <td th:text="${document.name}"></td>
+    </tr>
+    <tr>
+        <td>Тип</td>
+        <td th:text="${document.type}"></td>
+    </tr>
+    <tr>
+        <td>Дата</td>
+        <td th:text="${document.date}"></td>
+    </tr>
+    <tr>
+        <td>Описание</td>
+        <td th:text="${document.description}"></td>
+    </tr>
+    <tr th:if="${document.getTermYear() != null}">
+        <td>Срок</td>
+        <td th:text="${document.termYear}"></td>
+    </tr>
+    <tr th:if="${document.url != null}">
+        <td>URL</td>
+        <td><a th:text="${document.url}" th:href="${document.url}">Edit</a></td>
+    </tr>
+    <tr th:if="${document.file != null}">
+        <td>File</td>
+        <td><a th:text="${document.fileName}" th:href="@{/files/{id}(id=${document.id})}">file url</a></td>
+    </tr>
+    <tr th:each="field : ${document.fieldAndValue}">
+        <td th:text="${field.key}">field</td>
+        <td th:text="${field.value}">field</td>
+    </tr>
+    <tr>
+        <td><a th:href="@{/document/edit/{id}(id=${document.id})}">редактировать</a></td>
+    </tr>
+</table>
+
+<img th:src="${qrcode}">
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Шаблон</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Разлогиниться"/>
+</form>
+
+<h2><a href="/">Главная страница</a></h2>
+
+<form action="#" th:action="@{/template/create}" th:object="${template}" method="post">
+    <table>
+        <tr>
+            <td>
+                <input hidden type="text" th:field="*{id}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Имя шаблона</td>
+            <td>
+                <input type="text" th:field="*{name}" required/>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Автор</td>
+            <td>
+                <input type="text" th:field="*{author}" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>Дата создания</td>
+            <td>
+                <input type="date" th:field="*{date}" required/>
+            </td>
+        </tr>
+        <tr>
+            <td>Добавить срок</td>
+            <td>
+                <input type="checkbox" th:field="*{enableFieldTerm}" th:value="${enableFieldTerm}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Добавить загрузку файлов</td>
+            <td>
+                <input type="checkbox" th:field="*{enableFieldFile}" th:value="${enableFieldFile}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Добавить URL</td>
+            <td>
+                <input type="checkbox" th:field="*{enableFieldUrl}" th:value="${enableFieldUrl}"/>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Поля</b></td>
+        </tr>
+        <tr th:each="field,rowStat : *{fields}">
+            <!--            <td th:text="${rowStat.count}">1</td>-->
+            <td>
+                <input type="text" th:field="*{fields[__${rowStat.index}__]}"/>
+            </td>
+            <td>
+                <button type="submit" name="removeRow" th:value="${rowStat.index}">Удалить поле</button>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit" name="addRow">Добавить поле</button>
+
+    <button type="submit" name="save">Сохранить</button>
+</form>
+
+</body>
+</html>
